@@ -9,14 +9,14 @@
 在服务器上遇到的问题那都是真正的问题，，，，这个时候我就在想，为什么在服务器上都没问题，而在本地却这么费劲呢？？？？  
 **原来，服务器上启项目就是发布一个plan到virgo的pickup下，然后把项目的jar包和依赖包全部copy到repository/usr下**，这样启动就没任何问题，，，，  
 **但是本地是通过eclipse的virgo插件把plan发布到virgo实际是只是从maven上把项目的jar包解压到virgo的stage下**，，，问题就全部出现在这个环节上，  
-按我的理解，这个锅要eclipse的virgo插件来背。。。  
-于是我就在想，我干脆不用它了，，，我就干脆仿照服务器的发布方式，，，通过maven的方式把jar包直接copy到repository/usr下，然后把plan发布到pickup上，这样做了以后，我就很少碰到项目启不来的问题了，，，，，  
-恩恩，于是我就写了个工具类，使用方式如下：  
+按我的理解，这个锅要eclipse的virgo插件来背。。。   
+于是我就在想，我干脆不用它了，，，我就干脆仿照服务器的发布方式，，，通过maven的方式把jar包直接copy到repository/usr下，然后把plan发布到pickup上，这样做了以后，我就很少碰到项目启不来的问题了，，，，，   
+恩恩，于是我就写了个工具类，使用方式如下：   
 首先把 **maven-util.jar** 添加到 **CLASSPATH** 下，然后重启eclipse    
-![](https://github.com/ileler/maven-util/blob/master/images/3.png)
-然后把项目的 **build/pom.xml** 复制到项目的根目录下重命名为 **deploy.xml** (eg:`org.isli.irms.build/pom.xml`)
-![](https://github.com/ileler/maven-util/blob/master/images/1.png)
-![](https://github.com/ileler/maven-util/blob/master/images/2.png)
+![](https://github.com/ileler/maven-util/blob/master/images/3.png)  
+然后把项目的 **build/pom.xml** 复制到项目的根目录下重命名为 **deploy.xml** (eg:`org.isli.irms.build/pom.xml`)  
+![](https://github.com/ileler/maven-util/blob/master/images/1.png)  
+![](https://github.com/ileler/maven-util/blob/master/images/2.png)  
 ```
 |org.isli.irms
 |----|org.isli.irms.dba
@@ -147,8 +147,8 @@
 然后在deploy.xml的 *properties* 节点下添加配置项
 `<virgo.home>E:\***\virgo-tomcat-server-***</virgo.home>`也就是你的virgo路径
 然后在项目上右击 *Run as* 选择 *Run Configurations...* 然后在 *Maven Build* 下新建一项  **Base directory** 就是项目的路径， **Goals** 就填 `-f ./deploy.xml clean package -Pdev`   
-![](https://github.com/ileler/maven-util/blob/master/images/4.png)  
+![](https://github.com/ileler/maven-util/blob/master/images/4.png)    
 保存后，以后启项目的就只用在项目上右击 *Run as* 选择 *Maven build* 然后就选择你刚刚新增的项，带发布完成后就可以直接启动项目了。。。  
-![](https://github.com/ileler/maven-util/blob/master/images/5.png)  
-![](https://github.com/ileler/maven-util/blob/master/images/6.png)    
+![](https://github.com/ileler/maven-util/blob/master/images/5.png)    
+![](https://github.com/ileler/maven-util/blob/master/images/6.png)      
 请注意最后一张图， virgo 并没有发布任何 plan ，，，因为发布流程已经不走它了，，，现在只用它启动 virgo 就好了。。。。
